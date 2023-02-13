@@ -3,7 +3,7 @@
 function init() {
   const container = document.getElementById('popup');
   const content = document.getElementById('popup-content');
-  const closer = document.getElementById('popup-closer');
+  const pos = [11.555466748422223, 45.55268745];
 
   const overlay = new ol.Overlay({
     element: container,
@@ -23,18 +23,43 @@ function init() {
       }),
     ],
     view: new ol.View({
-      center: [11.555601582952226, 45.552535373028576],
-      zoom: 17,
+      center: pos,
+      zoom: 18,
     }),
   });
   var layer = new ol.layer.Vector({
     source: new ol.source.Vector({
         features: [
             new ol.Feature({
-                geometry: new ol.geom.Point([11.555601582952226, 45.552535373028576])
+                geometry: new ol.geom.Point(pos)
             })
         ]
     })
   });
   map.addLayer(layer);
+
+  const icon = document.createElement("img");
+  icon.src = "img/marker.webp";
+  map.addOverlay(new ol.Overlay({
+    position: pos,
+    positioning: "center-center",
+    element: icon,
+    stopEvent: false
+  }));  
+
+  map.on('singleclick', function (event) {
+    /*const trailheads = map.getFeaturesAtPixel(event.pixel, {
+      layerFilter: (layer) => layer === trailheadsLayer
+    });
+
+    if (trailheads.length > 0) {
+
+      const trailName = trailheads[0].get("TRL_NAME");
+      const parkName = trailheads[0].get("PARK_NAME");
+      popup.show(event.pos, `<b>${trailName}</b></br>${parkName}`);
+
+    } else {
+      popup.hide();
+    }*/
+  });
 }
