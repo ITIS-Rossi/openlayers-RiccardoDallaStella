@@ -1,8 +1,8 @@
 // Funzione init caricata all'avvio ...
 
 function init() {
-  const container = document.getElementById('popup');
-  const content = document.getElementById('popup-content');
+  const container = document.getElementById("popup");
+  const nomePopup = document.getElementById("popup-nome");
   const pos = [11.555466748422223, 45.55268745];
 
   const overlay = new ol.Overlay({
@@ -31,7 +31,8 @@ function init() {
     source: new ol.source.Vector({
         features: [
             new ol.Feature({
-                geometry: new ol.geom.Point(pos)
+                geometry: new ol.geom.Point(pos),
+                name: "ITIS ROSSI"
             })
         ]
     })
@@ -47,19 +48,14 @@ function init() {
     stopEvent: false
   }));  
 
-  map.on('singleclick', function (event) {
-    /*const trailheads = map.getFeaturesAtPixel(event.pixel, {
-      layerFilter: (layer) => layer === trailheadsLayer
-    });
-
-    if (trailheads.length > 0) {
-
-      const trailName = trailheads[0].get("TRL_NAME");
-      const parkName = trailheads[0].get("PARK_NAME");
-      popup.show(event.pos, `<b>${trailName}</b></br>${parkName}`);
-
-    } else {
-      popup.hide();
-    }*/
+  map.on("singleclick", function (event) {
+    const features = map.getFeaturesAtPixel(event.pixel);
+    if(features.length > 0){
+      const lastFeature = features[features.length - 1];
+      console.log(lastFeature);
+      nomePopup.innerHTML = lastFeature.get("name");
+      overlay.setPosition(lastFeature.getGeometry().flatCoordinates);
+    }
+    
   });
 }
