@@ -55,6 +55,7 @@ function init() {
       console.log(lastFeature);
       nomePopup.innerHTML = lastFeature.get("name");
       overlay.setPosition(lastFeature.getGeometry().flatCoordinates);
+      console.log(nomePopup);
     }
     
   });
