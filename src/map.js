@@ -2,7 +2,7 @@
 
 function init() {
   const container = document.getElementById("popup");
-  const nomePopup = document.getElementById("popup-nome");
+  const content = document.getElementById("popup-content");
   const pos = [11.555466748422223, 45.55268745];
 
   const overlay = new ol.Overlay({
@@ -24,7 +24,7 @@ function init() {
     ],
     view: new ol.View({
       center: pos,
-      zoom: 18,
+      zoom: 16,
     }),
   });
   var layer = new ol.layer.Vector({
@@ -40,7 +40,7 @@ function init() {
   map.addLayer(layer);
 
   const icon = document.createElement("img");
-  icon.src = "img/marker.webp";
+  icon.src = "img/marker.png";
   map.addOverlay(new ol.Overlay({
     position: pos,
     positioning: "center-center",
@@ -53,9 +53,9 @@ function init() {
     if(features.length > 0){
       const lastFeature = features[features.length - 1];
       console.log(lastFeature);
-      nomePopup.innerHTML = lastFeature.get("name");
+      content.innerHTML = lastFeature.get("name");
       overlay.setPosition(lastFeature.getGeometry().flatCoordinates);
-      console.log(nomePopup);
+      console.log(content);
     }
     
   });
