@@ -24,7 +24,7 @@ function init() {
     ],
     view: new ol.View({
       center: pos,
-      zoom: 16,
+      zoom: 17,
     }),
   });
   var layer = new ol.layer.Vector({
