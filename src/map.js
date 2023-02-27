@@ -3,8 +3,12 @@
 function init() {
   const container = document.getElementById("popup");
   const content = document.getElementById("popup-content");
-  const pos = [11.555466748422223, 45.55268745];
+  const closer = document.getElementById("popup-closer");
+  const pos1 = [11.555466748422223, 45.55268745];
+  const pos2 = [11.55369, 45.55266];
 
+  ol.proj.useGeographic();
+  
   const overlay = new ol.Overlay({
     element: container,
     autoPan: {
@@ -13,17 +17,21 @@ function init() {
       },
     },
   });
+  closer.onclick = function () {
+    overlay.setPosition(undefined);
+    closer.blur();
+    return false;
+  };
   
-  ol.proj.useGeographic();
-  let map = new ol.Map({
+  const map = new ol.Map({
     target: "mappa",
     layers: [
       new ol.layer.Tile({
         source: new ol.source.OSM(),
       }),
-    ],
-    view: new ol.View({
-      center: pos,
+      ],
+      view: new ol.View({
+      center: pos1,
       zoom: 17,
     }),
   });
@@ -31,22 +39,35 @@ function init() {
     source: new ol.source.Vector({
         features: [
             new ol.Feature({
-                geometry: new ol.geom.Point(pos),
+                geometry: new ol.geom.Point(pos1),
                 name: "ITIS ROSSI"
-            })
+            }),
+            new ol.Feature({
+              geometry: new ol.geom.Point(pos2),
+              name: "Rotatoria del Rossi"
+          })
         ]
     })
   });
   map.addLayer(layer);
 
-  const icon = document.createElement("img");
-  icon.src = "img/marker.png";
+  const icon1 = document.createElement("img");
+  icon1.src = "img/marker.png";
   map.addOverlay(new ol.Overlay({
-    position: pos,
+    position: pos1,
     positioning: "center-center",
-    element: icon,
+    element: icon1,
     stopEvent: false
-  }));  
+  }));
+  
+  const icon2 = document.createElement("img");
+  icon2.src = "img/marker.png";
+  map.addOverlay(new ol.Overlay({
+    position: pos2,
+    positioning: "center-center",
+    element: icon2,
+    stopEvent: false
+  }));
 
   map.on("singleclick", function (event) {
     const features = map.getFeaturesAtPixel(event.pixel);
@@ -57,6 +78,5 @@ function init() {
       overlay.setPosition(lastFeature.getGeometry().flatCoordinates);
       console.log(content);
     }
-    
   });
 }
