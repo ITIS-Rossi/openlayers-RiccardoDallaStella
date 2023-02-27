@@ -3,9 +3,8 @@
 function init() {
   const container = document.getElementById("popup");
   const content = document.getElementById("popup-content");
-  const closer = document.getElementById("popup-closer");
   const pos1 = [11.555466748422223, 45.55268745];
-  const pos2 = [11.55369, 45.55266];
+  const pos2 = [11.553702, 45.552662];
 
   ol.proj.useGeographic();
   
@@ -17,12 +16,17 @@ function init() {
       },
     },
   });
-  closer.onclick = function () {
-    overlay.setPosition(undefined);
-    closer.blur();
-    return false;
-  };
   
+  const featureRossi = new ol.Feature({
+    geometry: new ol.geom.Point(pos1),
+    name: "ITIS Rossi"
+  })
+
+  const featureRotatoria = new ol.Feature({
+    geometry: new ol.geom.Point(pos2),
+    name: "Rotatoria del Rossi"
+  })
+
   const map = new ol.Map({
     target: "mappa",
     layers: [
@@ -37,16 +41,7 @@ function init() {
   });
   var layer = new ol.layer.Vector({
     source: new ol.source.Vector({
-        features: [
-            new ol.Feature({
-                geometry: new ol.geom.Point(pos1),
-                name: "ITIS ROSSI"
-            }),
-            new ol.Feature({
-              geometry: new ol.geom.Point(pos2),
-              name: "Rotatoria del Rossi"
-          })
-        ]
+        features: [featureRossi, featureRotatoria]
     })
   });
   map.addLayer(layer);
@@ -77,6 +72,7 @@ function init() {
       content.innerHTML = lastFeature.get("name");
       overlay.setPosition(lastFeature.getGeometry().flatCoordinates);
       console.log(content);
+      alert(lastFeature.get("name"));
     }
   });
 }
