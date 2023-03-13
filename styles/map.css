@@ -1,10 +1,7 @@
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
-}
-
-img{
-  width: 40px;
 }
 
 #mappa {
@@ -15,7 +12,7 @@ img{
 }
 
 #popup {
-  padding: 5vw;
+  width: 135px;
+  height: 40px;
   background-color: white;
 }
-

@@ -22,10 +22,28 @@ function init() {
     name: "ITIS Rossi"
   })
 
+  const iconStyle1 = new ol.style.Style({
+    image: new ol.style.Icon({
+      anchor: [0.5, 1],
+      src: "img/marker.png"
+    }),
+  });
+  
+  featureRossi.setStyle(iconStyle1);
+
   const featureRotatoria = new ol.Feature({
     geometry: new ol.geom.Point(pos2),
     name: "Rotatoria del Rossi"
   })
+
+  const iconStyle2 = new ol.style.Style({
+    image: new ol.style.Icon({
+      anchor: [0.5, 1],
+      src: "img/marker.png"
+    }),
+  });
+  
+  featureRotatoria.setStyle(iconStyle2);
 
   const map = new ol.Map({
     target: "mappa",
@@ -38,6 +56,7 @@ function init() {
       center: pos1,
       zoom: 17,
     }),
+    overlay: overlay,
   });
   var layer = new ol.layer.Vector({
     source: new ol.source.Vector({
@@ -46,33 +65,52 @@ function init() {
   });
   map.addLayer(layer);
 
-  const icon1 = document.createElement("img");
-  icon1.src = "img/marker.png";
-  map.addOverlay(new ol.Overlay({
-    position: pos1,
-    positioning: "center-center",
-    element: icon1,
-    stopEvent: false
-  }));
-  
-  const icon2 = document.createElement("img");
-  icon2.src = "img/marker.png";
-  map.addOverlay(new ol.Overlay({
-    position: pos2,
-    positioning: "center-center",
-    element: icon2,
-    stopEvent: false
-  }));
+  const popup = new ol.Overlay({
+    element: container,
+    positioning: "bottom",
+    stopEvent: false,
+  })
+  map.addOverlay(popup);
 
-  map.on("singleclick", function (event) {
+  let popover;
+  function disposePopover(){
+    if(popover){
+      popover.dispose()
+      popover = undefined;
+    }
+  }
+
+  map.on("click", function(evt){
+    const feature = map.forEachFeatureAtPixel(evt.pixel, function(feature){
+      if(feature.length > 0){
+        return feature[feature.length - 1];
+      }
+      return feature;
+    });
+    disposePopover();
+    if(!feature){
+      popup.setPosition(undefined);
+      return;
+    }
+    popup.setPosition(evt.coordinate);
+    popover = new bootstrap.Popover(content, {
+      placement: "bottom",
+      html: true,
+      content: feature.get("name"),
+    });
+    popover.show();
+  })
+
+  map.on("movestart", disposePopover);
+
+  /*map.on("singleclick", function (event) {
     const features = map.getFeaturesAtPixel(event.pixel);
     if(features.length > 0){
       const lastFeature = features[features.length - 1];
       console.log(lastFeature);
       content.innerHTML = lastFeature.get("name");
-      overlay.setPosition(lastFeature.getGeometry().flatCoordinates);
+      overlay.setPosition(lastFeature.getGeometry());
       console.log(content);
-      alert(lastFeature.get("name"));
     }
-  });
+  });*/
 }
