@@ -15,4 +15,6 @@ body {
   width: 135px;
   height: 40px;
   background-color: white;
+  border: solid, 2px, black;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
