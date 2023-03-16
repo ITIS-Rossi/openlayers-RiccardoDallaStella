@@ -18,7 +18,7 @@ function init() {
   
   const featureRossi = new ol.Feature({
     geometry: new ol.geom.Point(posRossi),
-    name: "ITIS Rossi"
+    name: "ITIS Alessandro Rossi"
   })
 
   const featureRotatoria = new ol.Feature({
