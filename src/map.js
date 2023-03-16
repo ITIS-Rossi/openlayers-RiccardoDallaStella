@@ -102,15 +102,4 @@ function init() {
   })
 
   map.on("movestart", disposePopover);
-
-  /*map.on("singleclick", function (event) {
-    const features = map.getFeaturesAtPixel(event.pixel);
-    if(features.length > 0){
-      const lastFeature = features[features.length - 1];
-      console.log(lastFeature);
-      content.innerHTML = lastFeature.get("name");
-      overlay.setPosition(lastFeature.getGeometry());
-      console.log(content);
-    }
-  });*/
 }
